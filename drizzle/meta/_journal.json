@@ -1,0 +1,20 @@
+{
+  "version": "5",
+  "dialect": "pg",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "5",
+      "when": 1738359989101,
+      "tag": "0000_wooden_lady_bullseye",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "5",
+      "when": 1738361551845,
+      "tag": "0001_redundant_newton_destine",
+      "breakpoints": true
+    }
+  ]
+}
