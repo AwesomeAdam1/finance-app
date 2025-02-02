@@ -10,7 +10,8 @@ import { Button } from "@/components/ui/button";
 import {
 	Sheet,
 	SheetContent,
-	SheetTrigger
+	SheetTrigger,
+	SheetTitle
 } from "@/components/ui/sheet"
 
 const routes = [
@@ -51,6 +52,7 @@ export const Navigation = () => {
 	if (isMobile) {
 		return (
 			<Sheet open={isOpen} onOpenChange={setIsOpen}>
+				<SheetTitle></SheetTitle>
 				<SheetTrigger>
 					<Button
 						variant="outline"

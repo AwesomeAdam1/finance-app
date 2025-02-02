@@ -63,7 +63,7 @@ const AccountsPage = () => {
 						// @ts-ignore
 						data={accounts}
 						onDelete={(row) => {
-							// @ts-ignore d
+							// @ts-ignore
 							const ids = row.map((r) => r.original.id)
 							deleteAccounts.mutate({ ids })
 						}}
