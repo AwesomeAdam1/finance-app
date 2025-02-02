@@ -10,6 +10,7 @@ import { Button } from "@/components/ui/button";
 import {
 	Sheet,
 	SheetContent,
+	SheetTitle,
 	SheetTrigger
 } from "@/components/ui/sheet"
 
@@ -51,6 +52,9 @@ export const Navigation = () => {
 	if (isMobile) {
 		return (
 			<Sheet open={isOpen} onOpenChange={setIsOpen}>
+				<SheetTitle>
+
+				</SheetTitle>
 				<SheetTrigger>
 					<Button
 						variant="outline"
