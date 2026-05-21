@@ -15,27 +15,27 @@ export const useConfirm = (
 	title: string,
 	message: string,	
 ): [() => JSX.Element, () => Promise<unknown>] => {
-	 const [promise, setPromise] = useState<{ resolve: (value: boolean) => void} | null>(null)
+	const [promise, setPromise] = useState<{ resolve: (value: boolean) => void} | null>(null)
 
-	 const confirm = () => new Promise((resolve, reject) => {
+	const confirm = () => new Promise((resolve, reject) => {
 		setPromise({ resolve })
-	 })
+	})
 
-	 const handleClose = () => {
+	const handleClose = () => {
 		setPromise(null)
-	 }
+	}
 	 
-	 const handleConfirm = () => {
+	const handleConfirm = () => {
 		promise?.resolve(true),
 		handleClose()
-	 }
+	}
 
-	 const handleCancel = () => {
+	const handleCancel = () => {
 		promise?.resolve(false),
 		handleClose()
-	 }
+	}
 
-	 const ConfirmationDialog = () => (
+	const ConfirmationDialog = () => (
 		<Dialog open={promise !== null}>
 			<DialogContent>
 				<DialogHeader>
@@ -62,8 +62,8 @@ export const useConfirm = (
 				</DialogFooter>
 			</DialogContent>
 		</Dialog>
-	 )
+	)
 	 
-	 return [ConfirmationDialog, confirm]
+	return [ConfirmationDialog, confirm]
 }
 
