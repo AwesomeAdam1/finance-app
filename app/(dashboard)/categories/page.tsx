@@ -61,10 +61,8 @@ const CategoriesPage = () => {
 					<DataTable 
 						filterKey="name"
 						columns={columns} 
-						// @ts-ignore
 						data={categories}
 						onDelete={(row) => {
-							// @ts-ignore d
 							const ids = row.map((r) => r.original.id)
 							deleteCategories.mutate({ ids })
 						}}

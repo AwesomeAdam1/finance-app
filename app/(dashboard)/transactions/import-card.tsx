@@ -8,10 +8,9 @@ import { Button } from "@/components/ui/button"
 import { useState } from "react"
 import { ImportTable } from "./import-table"
 import { convertAmountToMiliunits } from "@/lib/utils"
-import { format, parse } from "date-fns"
+import { parse } from "date-fns"
 
 const dateFormat = "yyyy-MM-dd HH:mm:ss"
-const outputFormat = "yyyy-MM-dd"
 
 const requiredOptions = [
 	"amount",
@@ -23,10 +22,22 @@ interface SelectedColumnsState {
 	[key: string]: string | null,
 }
 
+type CsvTransactionRow = {
+	amount: string
+	date: string
+	payee: string
+}
+
+export type ImportTransaction = {
+	amount: number
+	date: Date
+	payee: string
+}
+
 type Props = {
 	data: string[][],
 	onCancel: () => void,
-	onSubmit: (data: any) => void,
+	onSubmit: (data: ImportTransaction[]) => void,
 }
 
 export const ImportCard = ({
@@ -81,10 +92,10 @@ export const ImportCard = ({
 		}
 
 		const arrayOfData = mappedData.body.map((row) => {
-			return row.reduce((acc : any, cell, index) => {
-				const header = mappedData.headers[index]
+			return row.reduce<Partial<CsvTransactionRow>>((acc, cell, index) => {
+				const header = mappedData.headers[index] as keyof CsvTransactionRow | null
 				if (header !== null) {
-					acc[header] = cell
+					acc[header] = cell ?? ""
 				}
 
 				return acc
@@ -92,9 +103,9 @@ export const ImportCard = ({
 		})
 
 		const formattedData = arrayOfData.map((item) => ({
-			...item,
-			amount: convertAmountToMiliunits(parseFloat(item.amount)), 
-			date: format(parse(item.date, dateFormat, new Date()), outputFormat),
+			amount: convertAmountToMiliunits(parseFloat(item.amount ?? "0")), 
+			date: parse(item.date ?? "", dateFormat, new Date()),
+			payee: item.payee ?? "",
 		}))
 
 		onSubmit(formattedData)

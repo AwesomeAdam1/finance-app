@@ -150,7 +150,6 @@ export const columns: ColumnDef<ResponseType>[] = [
   },
   {
     id: "actions",
-    // @ts-ignore 
     cell: ({ row }) => <Actions id={row.original.id} />
   }
 ]

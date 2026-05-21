@@ -1,5 +1,5 @@
 import { formatCurrency } from "@/lib/utils"
-import { RadialBar, RadialBarChart, Legend, ResponsiveContainer, Tooltip } from "recharts"
+import { RadialBar, RadialBarChart, Legend, ResponsiveContainer } from "recharts"
 
 const colors = ["#0062FF", "#12C6FF", "#FF647F", "#FF9354"]
 
@@ -10,9 +10,15 @@ type Props = {
 	}[]
 }
 
-export const RadialVariant = ({ data }: Props) => {
-	const total = data.reduce((sum, item) => sum + item.value, 0)
+type LegendPayload = {
+	color?: string
+	value?: string | number
+	payload?: {
+		value?: number
+	}
+}
 
+export const RadialVariant = ({ data }: Props) => {
 	return (
 		<ResponsiveContainer width="100%" height={350}>
 			<RadialBarChart
@@ -40,13 +46,10 @@ export const RadialVariant = ({ data }: Props) => {
 				verticalAlign="bottom" 
 				align="right"
 				iconType="circle"
-				content={({ payload }: any) => {
+				content={({ payload }: { payload?: readonly LegendPayload[] }) => {
 					return (
 					<ul className="flex flex-col space-y-2">
-						{payload?.map((entry: any, index: number) => {
-							const value = data[index]?.value ?? 0
-							const percentage = total > 0 ? (value / total) * 100 : 0
-
+						{payload?.map((entry, index) => {
 							return (
 							<li 
 								key={`item-${index}`}
@@ -61,7 +64,7 @@ export const RadialVariant = ({ data }: Props) => {
 									{entry.value}
 								</span>
 								<span className="text-sm">
-									{formatCurrency(entry.payload.value)}
+									{formatCurrency(entry.payload?.value ?? 0)}
 								</span>	
 								</div>
 							</li>

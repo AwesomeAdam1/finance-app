@@ -60,10 +60,8 @@ const AccountsPage = () => {
 					<DataTable 
 						filterKey="name"
 						columns={columns} 
-						// @ts-ignore
 						data={accounts}
 						onDelete={(row) => {
-							// @ts-ignore d
 							const ids = row.map((r) => r.original.id)
 							deleteAccounts.mutate({ ids })
 						}}

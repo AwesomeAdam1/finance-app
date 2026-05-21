@@ -5,7 +5,6 @@ import { useNewTransaction } from "@/features/transactions/hooks/use-new-transac
 import { useGetTransactions } from "@/features/transactions/api/use-get-transactions"
 import { useBulkDeleteTransactions } from "@/features/transactions/api/use-bulk-delete-transactions"
 
-import { transactions as transactionSchema } from "@/db/schema"
 import { Button } from "@/components/ui/button"
 import { 
 	Card,
@@ -17,19 +16,21 @@ import { DataTable } from "@/components/data-table"
 import { Skeleton } from "@/components/ui/skeleton"
 
 import { columns } from "./columns"
-import { UploadButton } from "./upload-button"
+import { UploadButton, type UploadResults } from "./upload-button"
 import { useState } from "react"
-import { ImportCard } from "./import-card"
+import { ImportCard, type ImportTransaction } from "./import-card"
 import { useSelectAccount } from "@/features/accounts/hooks/use-select-account"
 import { toast } from "sonner"
 import { useBulkCreateTransactions } from "@/features/transactions/api/use-bulk-create-transactions"
 
-enum VARIANTS {
-	LIST = "LIST",
-	IMPORT = "IMPORT",
-}
+const VARIANTS = {
+	LIST: "LIST",
+	IMPORT: "IMPORT",
+} as const
 
-const inital_import_results = {
+type Variant = (typeof VARIANTS)[keyof typeof VARIANTS]
+
+const inital_import_results: UploadResults = {
 	data: [],
 	errors: [],
 	meta: {}
@@ -37,7 +38,7 @@ const inital_import_results = {
 
 const TransactionsPage = () => {
 	const [AccountDialog, confirm] = useSelectAccount()
-	const [variant, setVariant] = useState<VARIANTS>(VARIANTS.LIST)
+	const [variant, setVariant] = useState<Variant>(VARIANTS.LIST)
 	const [importResults, setImportResults] = useState<typeof inital_import_results>(inital_import_results)
 
 	const onUpload = (results: typeof inital_import_results) => {
@@ -60,9 +61,7 @@ const TransactionsPage = () => {
 		transactionsQuery.isLoading ||
 		deleteTransactions.isPending
 
-	const onSubmitImport = async (
-		values: typeof transactionSchema.$inferInsert[],
-	) => {
+	const onSubmitImport = async (values: ImportTransaction[]) => {
 		const accountId = await confirm()
 
 		if (!accountId) {
@@ -136,10 +135,8 @@ const TransactionsPage = () => {
 					<DataTable 
 						filterKey="payee"
 						columns={columns} 
-						// @ts-ignore
 						data={transactions}
 						onDelete={(row) => {
-							// @ts-ignore
 							const ids = row.map((r) => r.original.id)
 							deleteTransactions.mutate({ ids })
 						}}

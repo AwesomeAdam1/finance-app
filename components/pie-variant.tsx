@@ -11,6 +11,11 @@ type Props = {
 	}[]
 }
 
+type LegendPayload = {
+	color?: string
+	value?: string | number
+}
+
 export const PieVariant = ({ data }: Props) => {
 	const total = data.reduce((sum, item) => sum + item.value, 0)
 
@@ -22,10 +27,10 @@ export const PieVariant = ({ data }: Props) => {
 				verticalAlign="bottom" 
 				align="right"
 				iconType="circle"
-				content={({ payload }: any) => {
+				content={({ payload }: { payload?: readonly LegendPayload[] }) => {
 					return (
 					<ul className="flex flex-col space-y-2">
-						{payload?.map((entry: any, index: number) => {
+						{payload?.map((entry, index) => {
 							const value = data[index]?.value ?? 0
 							const percentage = total > 0 ? (value / total) * 100 : 0
 
