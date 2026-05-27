@@ -6,6 +6,7 @@ import { LineVariant } from "./line-variant"
 import { useState } from "react"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "./ui/select"
 import { Skeleton } from "./ui/skeleton"
+import { usePaywall } from "@/features/subscriptions/hooks/use-paywall"
 
 type Props = {
 	data?: {
@@ -17,8 +18,13 @@ type Props = {
 
 export const Chart = ({ data = [] }: Props) => {
 	const [chartType, setChartType] = useState("area")
+	const { shouldBlock, triggerPaywall } = usePaywall();
 
 	const onTypeChange = (type: string) => {
+		if (type !== "area" && shouldBlock) {
+			triggerPaywall();
+			return;
+		}
 		setChartType(type)
 	}
 
